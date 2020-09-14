@@ -30,6 +30,7 @@ function processFirstItem(stringList, callback) {
  * The variable count is defined inside the function counterMaker in counter1, and count is defined outside the function in counter2.  Also counter 1 returns a function that increments counter, where as counter2 just returns counter after it has been incremented.
  *
  * 2. Which of the two uses a closure? How can you tell?
+ * counterMaker() uses a closure because the return function acesses the count variable that is defined outside of the return function.
  *
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better?
  *
@@ -107,17 +108,23 @@ and returns the score at each pont in the game, like so:
 9th inning: awayTeam - homeTeam
 
 Final Score: awayTeam - homeTeam */
-function getInningScore(away, home) {
-  return `${away} - ${home}`;
+
+function getInningScore(score) {
+  let home = 0;
+  let away = 0;
+  return () => {
+    home += score();
+    away += score();
+    return `${away} - ${home}`;
+  };
 }
 
 function scoreboard(getInningScore, inning, innings) {
-  let awayScore = 0;
-  let homeScore = 0;
+  const score = getInningScore(inning);
   let scoreLog = '';
+  let currentScore = '';
   for (let i = 1; i <= innings; i++) {
-    awayScore += inning();
-    homeScore += inning();
+    currentScore = score();
     if (
       i === 11 ||
       i === 12 ||
@@ -127,22 +134,21 @@ function scoreboard(getInningScore, inning, innings) {
       i % 100 === 13
     ) {
       // Special formatting for 11th, 12th, 13th inning outputs
-      scoreLog += `${i}th inning: ${getInningScore(awayScore, homeScore)} \n`;
+      scoreLog += `${i}th inning: ${currentScore} \n`;
     } else if (i === 1 || i % 10 === 1) {
       // makes all innings ending in one (other then 11th) have a "st" after the inning number.
-      scoreLog += `${i}st inning: ${getInningScore(awayScore, homeScore)} \n`;
+      scoreLog += `${i}st inning: ${currentScore} \n`;
     } else if (i === 2 || i % 10 === 2) {
       // makes all innings ending in two (other then 12th) have a "nd" after the inning number.
-      scoreLog += `${i}nd inning: ${getInningScore(awayScore, homeScore)} \n`;
+      scoreLog += `${i}nd inning: ${currentScore} \n`;
     } else if (i === 3 || i % 10 === 3) {
       // makes all innings ending in a three (other then the 13th) have a "rd" after the inning number.
-      scoreLog += `${i}rd inning: ${getInningScore(awayScore, homeScore)} \n`;
+      scoreLog += `${i}rd inning: ${currentScore} \n`;
     } else {
       // all other innings get a "th" after the inning number.
-      scoreLog += `${i}th inning: ${getInningScore(awayScore, homeScore)} \n`;
+      scoreLog += `${i}th inning: ${currentScore} \n`;
     }
   }
-  return scoreLog + `Final Score: ${awayScore} - ${homeScore}`;
+  return scoreLog + `\n` + `Final Score: ${currentScore}`;
 }
-
-console.log(scoreboard(getInningScore, inning, 9));
+console.log(scoreboard(getInningScore, inning, 25));
