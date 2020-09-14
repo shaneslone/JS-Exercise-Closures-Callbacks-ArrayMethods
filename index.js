@@ -59,7 +59,6 @@ Write a function called `inning` that generates a random number of points that a
 function inning() {
   return Math.floor(Math.random() * 3);
 }
-console.log(inning());
 
 /* Task 3: finalScore()
 
@@ -87,8 +86,6 @@ function finalScore(callback, innings) {
   "Away": ${awayScore}
   `;
 }
-
-console.log(finalScore(inning, 9));
 /* Task 4: 
 
 Create a function called `scoreboard` that accepts the following parameters: 
@@ -110,7 +107,42 @@ and returns the score at each pont in the game, like so:
 9th inning: awayTeam - homeTeam
 
 Final Score: awayTeam - homeTeam */
-
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function getInningScore(away, home) {
+  return `${away} - ${home}`;
 }
+
+function scoreboard(getInningScore, inning, innings) {
+  let awayScore = 0;
+  let homeScore = 0;
+  let scoreLog = '';
+  for (let i = 1; i <= innings; i++) {
+    awayScore += inning();
+    homeScore += inning();
+    if (
+      i === 11 ||
+      i === 12 ||
+      i === 13 ||
+      i % 100 === 11 ||
+      i % 100 === 12 ||
+      i % 100 === 13
+    ) {
+      // Special formatting for 11th, 12th, 13th inning outputs
+      scoreLog += `${i}th inning: ${getInningScore(awayScore, homeScore)} \n`;
+    } else if (i === 1 || i % 10 === 1) {
+      // makes all innings ending in one (other then 11th) have a "st" after the inning number.
+      scoreLog += `${i}st inning: ${getInningScore(awayScore, homeScore)} \n`;
+    } else if (i === 2 || i % 10 === 2) {
+      // makes all innings ending in two (other then 12th) have a "nd" after the inning number.
+      scoreLog += `${i}nd inning: ${getInningScore(awayScore, homeScore)} \n`;
+    } else if (i === 3 || i % 10 === 3) {
+      // makes all innings ending in a three (other then the 13th) have a "rd" after the inning number.
+      scoreLog += `${i}rd inning: ${getInningScore(awayScore, homeScore)} \n`;
+    } else {
+      // all other innings get a "th" after the inning number.
+      scoreLog += `${i}th inning: ${getInningScore(awayScore, homeScore)} \n`;
+    }
+  }
+  return scoreLog + `Final Score: ${awayScore} - ${homeScore}`;
+}
+
+console.log(scoreboard(getInningScore, inning, 9));
