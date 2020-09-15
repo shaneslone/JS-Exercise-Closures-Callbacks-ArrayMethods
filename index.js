@@ -30,7 +30,7 @@ function processFirstItem(stringList, callback) {
  * The variable count is defined inside the function counterMaker in counter1, and count is defined outside the function in counter2.  Also counter 1 returns a function that increments counter, where as counter2 just returns counter after it has been incremented.
  *
  * 2. Which of the two uses a closure? How can you tell?
- * counter1 uses a closure because the return function acesses the count variable that is defined outside of the return function.
+ * Both use a closure, because both have functions that are reaching for variables outside of their scope.
  *
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better?
  * You would want to use counter1 if the count is something that you want to keep confined inside of the function, where as counter2 is better if you want the count to be assiable on the global scope.
