@@ -30,7 +30,7 @@ function processFirstItem(stringList, callback) {
  * The variable count is defined inside the function counterMaker in counter1, and count is defined outside the function in counter2.  Also counter 1 returns a function that increments counter, where as counter2 just returns counter after it has been incremented.
  *
  * 2. Which of the two uses a closure? How can you tell?
- * Both use a closure, because both have functions that are reaching for variables outside of their scope.
+ * counter 1 uses a closure, because is givesus acess to the count variable inside of the function that was in it's scope.
  *
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better?
  * You would want to use counter1 if the count is something that you want to keep confined inside of the function, where as counter2 is better if you want the count to be assiable on the global scope.
@@ -46,12 +46,17 @@ function counterMaker() {
 
 const counter1 = counterMaker();
 
+console.log(counter1());
+debugger;
+
 // counter2 code
 let count = 0;
 
 function counter2() {
   return count++;
 }
+console.log(counter2());
+debugger;
 
 /* Task 2: inning() 
 
@@ -151,4 +156,4 @@ function scoreboard(getInningScore, inning, innings) {
   }
   return scoreLog + `\n` + `Final Score: ${currentScore}`;
 }
-console.log(scoreboard(getInningScore, inning, 9));
+console.log(scoreboard(getInningScore, inning, 25));
